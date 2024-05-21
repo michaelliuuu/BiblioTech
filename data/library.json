@@ -1,0 +1,9 @@
+{
+    "books": [{
+        "author": "there",
+        "name": "hello",
+        "availability": true,
+        "book number": 3213
+    }],
+    "name": "Bibliotech's library"
+}

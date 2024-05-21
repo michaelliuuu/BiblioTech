@@ -1,0 +1,17 @@
+{
+    "books": [
+        {
+            "author": "stphen",
+            "name": "mockingjay",
+            "availability": true,
+            "book number": 1251
+        },
+        {
+            "author": "bettina",
+            "name": "illegal",
+            "availability": true,
+            "book number": 41985
+        }
+    ],
+    "name": "Bibliotech's library"
+}
