@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 public class BiblioTechGUI extends JFrame {
     // save/reload
@@ -361,12 +362,24 @@ public class BiblioTechGUI extends JFrame {
         removeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Book book = new Book(nameTF1.getText(), authorTF1.getText(), Integer.parseInt(bookNumTF1.getText()));
-                library.removeBook(book);
-                updateDisplayLibraryTextArea();
-                nameTF1.setText("");
-                authorTF1.setText("");
-                bookNumTF1.setText("");
+                try {
+                    Book book = new Book(nameTF1.getText(), authorTF1.getText(),
+                            Integer.parseInt(bookNumTF1.getText()));
+                    if (checkIfBookInLibrary(book)) {
+                        library.removeBook(book);
+                        updateDisplayLibraryTextArea();
+                        nameTF1.setText("");
+                        authorTF1.setText("");
+                        bookNumTF1.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Book is not found in the library.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid number for the book number.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "An error occurred while removing the book: "
+                            + ex.getMessage());
+                }
             }
         });
     }
@@ -387,6 +400,18 @@ public class BiblioTechGUI extends JFrame {
         });
     }
 
+    // EFFECTS: checks if the book is in the library by seeing if the name, author, and book number matches
+    public boolean checkIfBookInLibrary(Book checkBook) {
+        boolean check = false;
+        for (Book book : library.getBooks()) {
+            if (Objects.equals(checkBook.getName(), book.getName()) && Objects.equals(checkBook.getAuthor(),
+                    book.getAuthor()) && checkBook.getBookNumber() == book.getBookNumber()) {
+                check = true;
+            }
+        }
+        return check;
+    }
+
     // EFFECTS: adds action to display library button where it displays the library in a textarea
     public void displayLibraryActionListener() {
         displayLibraryBtn.addActionListener(new ActionListener() {
@@ -402,9 +427,9 @@ public class BiblioTechGUI extends JFrame {
     public void updateDisplayLibraryTextArea() {
         displayLibraryTA.setText("");
         for (Book book : library.getBooks()) {
-            displayLibraryTA.append("Book Title: " + book.getName() + " , Author: " + book.getAuthor()
-                    + " , Book Number: " + book.getBookNumber()
-                    + " , Availability: " + book.getIsAvailable() + "\n");
+            displayLibraryTA.append("Book Title: " + book.getName() + ", Author: " + book.getAuthor()
+                    + ", Book Number: " + book.getBookNumber()
+                    + ", Availability: " + book.getIsAvailable() + "\n");
         }
     }
 
